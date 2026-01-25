@@ -1,0 +1,196 @@
+:root {
+    --bg: #1a1a1a;
+    --card-bg: #0d0d0d;
+    --text: #ffffff;
+    --text-dim: #888888;
+    --border: #333333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 16px;
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+}
+
+.refresh-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.refresh-btn:active {
+    transform: scale(0.95);
+    background: var(--border);
+}
+
+.refresh-btn.loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Station Cards */
+.station-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.station-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+}
+
+.station-subtitle {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-dim);
+}
+
+.station-note {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    margin-top: -8px;
+}
+
+/* Direction Groups */
+.direction-group {
+    margin-bottom: 16px;
+}
+
+.direction-group:last-child {
+    margin-bottom: 0;
+}
+
+.direction-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+}
+
+/* Train Rows */
+.trains {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.train-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.line-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.line-badge.yellow-text {
+    color: #000000;
+}
+
+/* Time Chips */
+.train-times {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.time-chip {
+    background: #2a2a2a;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+.time-chip.arriving {
+    background: #2d4a2d;
+    color: #6CBE45;
+}
+
+.no-trains {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Status Bar */
+.status-bar {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 8px;
+}
+
+/* Error Message */
+.error-msg {
+    background: #3d2a2a;
+    border: 1px solid #5a3a3a;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    color: #ff8888;
+}
+
+/* Loading Skeleton */
+.loading-skeleton {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 6px;
+    height: 32px;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}

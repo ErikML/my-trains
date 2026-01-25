@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0039A6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="My Trains">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
+    <title>My Trains</title>
+</head>
+<body>
+    <div class="header">
+        <h1>My Trains</h1>
+        <button class="refresh-btn" id="refreshBtn">Refresh</button>
+    </div>
+
+    <div id="errorContainer"></div>
+
+    <div class="station-card">
+        <div class="station-name">Atlantic Av-Barclays Ctr</div>
+        <div id="atlantic-content">
+            <div class="loading-skeleton"></div>
+        </div>
+    </div>
+
+    <div class="station-card">
+        <div class="station-name">
+            Times Sq-42 St 
+            <span class="station-subtitle">+ Bryant Park for B/D</span>
+        </div>
+        <div class="station-note">Note: B train doesn't run weekends/late nights</div>
+        <div id="timessq-content">
+            <div class="loading-skeleton"></div>
+        </div>
+    </div>
+
+    <div class="status-bar" id="statusBar">Loading...</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/protobufjs@7.2.6/dist/protobuf.min.js"></script>
+    <script src="/app.js"></script>
+</body>
+</html>
