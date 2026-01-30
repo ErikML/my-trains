@@ -37,24 +37,18 @@ h1 {
     letter-spacing: -0.02em;
 }
 
-.refresh-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 500;
+.title-btn {
     cursor: pointer;
-    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 0.2s;
+    user-select: none;
 }
 
-.refresh-btn:active {
-    transform: scale(0.95);
-    background: var(--border);
+.title-btn:active {
+    opacity: 0.5;
 }
 
-.refresh-btn.loading {
+.title-btn.loading {
     opacity: 0.5;
     pointer-events: none;
 }
