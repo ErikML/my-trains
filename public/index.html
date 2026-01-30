@@ -16,23 +16,48 @@
         <button class="refresh-btn" id="refreshBtn">Refresh</button>
     </div>
 
+    <div class="tab-bar">
+        <button class="tab active" data-tab="atlantic">Atlantic</button>
+        <button class="tab" data-tab="timessq">Times Sq</button>
+        <button class="tab tab-add" data-tab="add">+</button>
+    </div>
+
     <div id="errorContainer"></div>
 
-    <div class="station-card">
-        <div class="station-name">Atlantic Av-Barclays Ctr</div>
-        <div id="atlantic-content">
-            <div class="loading-skeleton"></div>
+    <div class="tab-content active" id="view-atlantic">
+        <div class="station-card">
+            <div class="station-name">Atlantic Av-Barclays Ctr</div>
+            <div id="atlantic-content">
+                <div class="loading-skeleton"></div>
+            </div>
         </div>
     </div>
 
-    <div class="station-card">
-        <div class="station-name">
-            Times Sq-42 St 
-            <span class="station-subtitle">+ Bryant Park for B/D</span>
+    <div class="tab-content" id="view-timessq">
+        <div class="station-card">
+            <div class="station-name">Times Sq-42 St</div>
+            <div id="timessq-content">
+                <div class="loading-skeleton"></div>
+            </div>
         </div>
-        <div class="station-note">Note: B train doesn't run weekends/late nights</div>
-        <div id="timessq-content">
-            <div class="loading-skeleton"></div>
+    </div>
+
+    <div class="tab-content" id="view-hoyt">
+        <div class="station-card">
+            <div class="station-name">Hoyt-Schermerhorn Streets</div>
+            <div id="hoyt-content">
+                <div class="loading-skeleton"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="view-add">
+        <div class="station-list">
+            <div class="station-list-header">Add Station</div>
+            <button class="station-list-item" data-station="hoyt">
+                <span class="station-list-name">Hoyt-Schermerhorn Streets</span>
+                <span class="station-list-detail">Uptown A</span>
+            </button>
         </div>
     </div>
 
