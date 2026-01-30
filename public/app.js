@@ -17,14 +17,17 @@ const STATIONS = {
         direction: 'N',
         directionLabel: 'Uptown / Manhattan',
         stops: ['D24N', 'R36N', '234N', '423N'],
-        feeds: ['bdfm', 'nqrw', '1234567']
+        feeds: ['bdfm', 'nqrw', '1234567'],
+        containerId: 'atlantic-content'
     },
     timessq: {
         name: 'Times Sq-42 St',
         direction: 'S',
         directionLabel: 'Downtown / Brooklyn',
         stops: ['R16S', '127S', '725S'],
-        feeds: ['nqrw', '1234567']
+        feeds: ['nqrw', '1234567'],
+        containerId: 'timessq-content',
+        mergeWith: ['bryantpark']
     },
     bryantpark: {
         name: '42 St-Bryant Park',
@@ -32,11 +35,19 @@ const STATIONS = {
         directionLabel: 'Downtown / Brooklyn',
         stops: ['D15S', 'D16S', 'D17S'],
         feeds: ['bdfm']
+    },
+    hoyt: {
+        name: 'Hoyt-Schermerhorn Streets',
+        direction: 'N',
+        directionLabel: 'Uptown',
+        stops: ['A42N'],
+        feeds: ['ace'],
+        containerId: 'hoyt-content'
     }
 };
 
 // Display priority (Q, B, D, N first)
-const LINE_PRIORITY = ['Q', 'B', 'D', 'N', 'R', 'W', 'F', 'M', '1', '2', '3', '4', '5', '7', 'S'];
+const LINE_PRIORITY = ['Q', 'B', 'D', 'N', 'R', 'W', 'F', 'M', 'A', 'C', 'E', '1', '2', '3', '4', '5', '7', 'S'];
 
 // MTA line colors
 const LINE_COLORS = {
@@ -53,6 +64,9 @@ const LINE_COLORS = {
 };
 
 const YELLOW_LINES = ['N', 'Q', 'R', 'W'];
+
+// Tab state
+let activeTab = 'atlantic';
 
 // GTFS Protobuf schema
 const GTFS_PROTO = `
@@ -194,7 +208,7 @@ function renderStation(containerId, grouped, directionLabel) {
 
             html += `
                 <div class="train-row">
-                    <div class="line-badge ${isYellow ? 'yellow-text' : ''}" 
+                    <div class="line-badge ${isYellow ? 'yellow-text' : ''}"
                          style="background-color: ${color}">
                         ${route}
                     </div>
@@ -215,8 +229,74 @@ function renderStation(containerId, grouped, directionLabel) {
     container.innerHTML = html;
 }
 
+// Switch active tab
+function switchTab(tabName) {
+    activeTab = tabName;
+
+    // Update tab buttons
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.tab === tabName);
+    });
+
+    // Update content views
+    document.querySelectorAll('.tab-content').forEach(view => {
+        view.classList.remove('active');
+    });
+    document.getElementById('view-' + tabName).classList.add('active');
+
+    // Fetch data for station tabs (not the add tab)
+    if (tabName !== 'add') {
+        refreshData();
+    }
+}
+
+// Fetch data for a specific station key
+async function fetchStationData(stationKey) {
+    const station = STATIONS[stationKey];
+    if (!station || !station.containerId) return;
+
+    const neededFeeds = new Set(station.feeds);
+
+    // If station merges with others, include their feeds too
+    if (station.mergeWith) {
+        for (const mergeKey of station.mergeWith) {
+            for (const f of STATIONS[mergeKey].feeds) {
+                neededFeeds.add(f);
+            }
+        }
+    }
+
+    const feeds = {};
+    for (const key of neededFeeds) {
+        feeds[key] = await fetchFeed(key);
+    }
+
+    let arrivals = [];
+    for (const feedKey of station.feeds) {
+        if (feeds[feedKey]) {
+            arrivals.push(...extractArrivals(feeds[feedKey], station.stops));
+        }
+    }
+
+    // Merge arrivals from merged stations
+    if (station.mergeWith) {
+        for (const mergeKey of station.mergeWith) {
+            const mergeStation = STATIONS[mergeKey];
+            for (const feedKey of mergeStation.feeds) {
+                if (feeds[feedKey]) {
+                    arrivals.push(...extractArrivals(feeds[feedKey], mergeStation.stops));
+                }
+            }
+        }
+    }
+
+    renderStation(station.containerId, groupArrivals(arrivals), station.directionLabel);
+}
+
 // Main refresh function
 async function refreshData() {
+    if (activeTab === 'add') return;
+
     const btn = document.getElementById('refreshBtn');
     btn.classList.add('loading');
     btn.textContent = '...';
@@ -224,54 +304,14 @@ async function refreshData() {
     document.getElementById('errorContainer').innerHTML = '';
 
     try {
-        // Get all unique feeds needed
-        const neededFeeds = new Set([
-            ...STATIONS.atlantic.feeds,
-            ...STATIONS.timessq.feeds,
-            ...STATIONS.bryantpark.feeds
-        ]);
-
-        // Fetch all feeds
-        const feeds = {};
-        for (const key of neededFeeds) {
-            feeds[key] = await fetchFeed(key);
-        }
-
-        // Check if any feeds loaded
-        const loadedFeeds = Object.values(feeds).filter(f => f !== null);
-        if (loadedFeeds.length === 0) {
-            throw new Error('Failed to load feeds');
-        }
-
-        // Process Atlantic Ave (Uptown)
-        let atlanticArrivals = [];
-        for (const feedKey of STATIONS.atlantic.feeds) {
-            if (feeds[feedKey]) {
-                atlanticArrivals.push(...extractArrivals(feeds[feedKey], STATIONS.atlantic.stops));
-            }
-        }
-        renderStation('atlantic-content', groupArrivals(atlanticArrivals), STATIONS.atlantic.directionLabel);
-
-        // Process Times Sq + Bryant Park (Downtown)
-        let downtownArrivals = [];
-        for (const feedKey of STATIONS.timessq.feeds) {
-            if (feeds[feedKey]) {
-                downtownArrivals.push(...extractArrivals(feeds[feedKey], STATIONS.timessq.stops));
-            }
-        }
-        for (const feedKey of STATIONS.bryantpark.feeds) {
-            if (feeds[feedKey]) {
-                downtownArrivals.push(...extractArrivals(feeds[feedKey], STATIONS.bryantpark.stops));
-            }
-        }
-        renderStation('timessq-content', groupArrivals(downtownArrivals), STATIONS.timessq.directionLabel);
+        await fetchStationData(activeTab);
 
         // Update status
         document.getElementById('statusBar').textContent = 'Updated ' + new Date().toLocaleTimeString();
 
     } catch (err) {
         console.error('Refresh error:', err);
-        document.getElementById('errorContainer').innerHTML = 
+        document.getElementById('errorContainer').innerHTML =
             '<div class="error-msg">Error loading data. Check console for details.</div>';
         document.getElementById('statusBar').textContent = 'Update failed';
     }
@@ -280,7 +320,20 @@ async function refreshData() {
     btn.textContent = 'Refresh';
 }
 
-// Event listeners
+// Tab click handlers
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+});
+
+// Station list item click handler
+document.querySelectorAll('.station-list-item').forEach(item => {
+    item.addEventListener('click', () => {
+        const stationKey = item.dataset.station;
+        switchTab(stationKey);
+    });
+});
+
+// Refresh button
 document.getElementById('refreshBtn').addEventListener('click', refreshData);
 
 // Auto-refresh every 30 seconds

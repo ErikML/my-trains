@@ -28,7 +28,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 h1 {
@@ -57,6 +57,54 @@ h1 {
 .refresh-btn.loading {
     opacity: 0.5;
     pointer-events: none;
+}
+
+/* Tab Bar */
+.tab-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+}
+
+.tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 12px 8px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.tab.active {
+    color: var(--text);
+    border-bottom-color: #0039A6;
+}
+
+.tab:active {
+    opacity: 0.7;
+}
+
+.tab-add {
+    flex: 0 0 auto;
+    padding: 12px 20px;
+    font-size: 1.3rem;
+    font-weight: 900;
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
 }
 
 /* Station Cards */
@@ -160,6 +208,46 @@ h1 {
     color: var(--text-dim);
     font-size: 0.9rem;
     font-style: italic;
+}
+
+/* Station List */
+.station-list {
+    padding: 4px 0;
+}
+
+.station-list-header {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.station-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    color: var(--text);
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.station-list-item:active {
+    background: #1a1a1a;
+}
+
+.station-list-name {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.station-list-detail {
+    font-size: 0.85rem;
+    color: var(--text-dim);
 }
 
 /* Status Bar */
