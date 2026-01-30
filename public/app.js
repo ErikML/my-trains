@@ -297,9 +297,8 @@ async function fetchStationData(stationKey) {
 async function refreshData() {
     if (activeTab === 'add') return;
 
-    const btn = document.getElementById('refreshBtn');
-    btn.classList.add('loading');
-    btn.textContent = '...';
+    const title = document.getElementById('refreshBtn');
+    title.classList.add('loading');
 
     document.getElementById('errorContainer').innerHTML = '';
 
@@ -316,8 +315,7 @@ async function refreshData() {
         document.getElementById('statusBar').textContent = 'Update failed';
     }
 
-    btn.classList.remove('loading');
-    btn.textContent = 'Refresh';
+    title.classList.remove('loading');
 }
 
 // Tab click handlers
