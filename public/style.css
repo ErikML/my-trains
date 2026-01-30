@@ -1,5 +1,5 @@
 :root {
-    --bg: #1a1a1a;
+    --bg: #111111;
     --card-bg: #0d0d0d;
     --text: #ffffff;
     --text-dim: #888888;
@@ -13,14 +13,14 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
     min-height: 100dvh;
-    padding: 16px;
-    padding-top: max(16px, env(safe-area-inset-top));
-    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    padding: 20px;
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
 }
 
 /* Header */
@@ -58,7 +58,6 @@ h1 {
     display: flex;
     gap: 4px;
     margin-bottom: 16px;
-    border-bottom: 1px solid var(--border);
     padding-bottom: 0;
 }
 
@@ -68,17 +67,19 @@ h1 {
     border: none;
     color: var(--text-dim);
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 700;
     padding: 12px 8px;
     cursor: pointer;
-    border-bottom: 3px solid transparent;
+    border-bottom: 4px solid transparent;
     transition: all 0.2s;
 }
 
 .tab.active {
     color: var(--text);
     border-bottom-color: #0039A6;
+    background: rgba(0, 57, 166, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 57, 166, 0.25);
 }
 
 .tab:active {
@@ -104,14 +105,15 @@ h1 {
 /* Station Cards */
 .station-card {
     background: var(--card-bg);
-    border: 1px solid var(--border);
+    border: none;
     border-radius: 16px;
     padding: 20px;
     margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .station-name {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 16px;
     letter-spacing: -0.01em;
@@ -140,19 +142,19 @@ h1 {
 }
 
 .direction-label {
-    font-size: 0.75rem;
-    font-weight: 500;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: var(--text-dim);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 10px;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
 }
 
 /* Train Rows */
 .trains {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
 }
 
 .train-row {
@@ -162,15 +164,16 @@ h1 {
 }
 
 .line-badge {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 900;
-    font-size: 1rem;
+    font-size: 1.05rem;
     flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
 .line-badge.yellow-text {
@@ -186,9 +189,9 @@ h1 {
 
 .time-chip {
     background: #2a2a2a;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 0.9rem;
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
     font-weight: 500;
     font-variant-numeric: tabular-nums;
 }
@@ -196,6 +199,7 @@ h1 {
 .time-chip.arriving {
     background: #2d4a2d;
     color: #6CBE45;
+    box-shadow: 0 0 8px rgba(108, 190, 69, 0.3);
 }
 
 .no-trains {
@@ -221,13 +225,23 @@ h1 {
     align-items: center;
     width: 100%;
     background: var(--card-bg);
-    border: 1px solid var(--border);
+    border: none;
     border-radius: 12px;
-    padding: 16px 20px;
+    padding: 18px 20px;
     color: var(--text);
     font-family: inherit;
     cursor: pointer;
     transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.station-list-item::after {
+    content: '›';
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--text-dim);
+    margin-left: 8px;
+    flex-shrink: 0;
 }
 
 .station-list-item:active {
@@ -248,7 +262,7 @@ h1 {
 .status-bar {
     text-align: center;
     font-size: 0.75rem;
-    color: var(--text-dim);
+    color: #999999;
     margin-top: 8px;
 }
 
@@ -269,7 +283,7 @@ h1 {
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
     border-radius: 6px;
-    height: 32px;
+    height: 36px;
 }
 
 @keyframes shimmer {
