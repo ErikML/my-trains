@@ -170,9 +170,9 @@ function groupArrivals(arrivals) {
         grouped[arr.route].push(arr.minutesAway);
     }
 
-    // Sort times and limit to 4 per route
+    // Sort times and limit to 3 per route
     for (const route of Object.keys(grouped)) {
-        grouped[route] = grouped[route].sort((a, b) => a - b).slice(0, 4);
+        grouped[route] = grouped[route].sort((a, b) => a - b).slice(0, 3);
     }
 
     return grouped;
